@@ -25,7 +25,7 @@ module Kernel
     require_without_automagic name
   rescue SyntaxError => e
     if e.message.include? 'invalid multibyte char'
-      filename = e.message.force_encoding("UTF-8").scan(/(^.*?):/).first.first
+      filename = e.message.encode("UTF-8", :invalid => :replace).scan(/(^.*?):/).first.first
       require 'tempfile'
       temp = Tempfile.new('automagic_temp', File.dirname(filename))
       temp.write "# coding: utf-8\n"
